@@ -23,7 +23,7 @@ public class DBAccess {
 	public static void main(String[] args) {
 		DBAccess acc = new DBAccess();
 		System.out.println("Mini-Tutorial der Klasse DBAccess" );
-		System.out.println("c/o Sascha Alda, 2019 - 2022" );
+		System.out.println("c/o Sascha Alda, 2019 - 2023" );
 		System.out.println("---------------------------------" );
 		System.out.println("Zunächst MUSS ein externer Client (außerhalb der Komponente!) mit der Methode openConnection() die Session explizit öffnen!" );
 		acc.openConnection();
