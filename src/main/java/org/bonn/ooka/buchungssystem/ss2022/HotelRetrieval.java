@@ -4,7 +4,7 @@ import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
 
 import java.util.List;
 
-class HotelRetrieval {
+class HotelRetrieval implements HotelSearch {
 
     private DBAccess dbAccess;
     private DBCache<Hotel> cache;
@@ -14,7 +14,7 @@ class HotelRetrieval {
         this.dbAccess = new DBAccess();
     }
 
-    protected List<Hotel> getHotelByName(String name) {
+    public List<Hotel> getHotelByName(String name) {
         if (this.cache.isCached(name)) {
             return this.cache.getValue(name);
         } else {
@@ -24,11 +24,11 @@ class HotelRetrieval {
         }
     }
 
-    protected void openSession() {
+    public void openSession() {
         this.dbAccess.openConnection();
     }
 
-    protected void closeSession() {
+    public void closeSession() {
         this.dbAccess.closeConnection();
     }
 }
