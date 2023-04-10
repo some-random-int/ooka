@@ -1,6 +1,8 @@
 package org.bonn.ooka.buchungssystem.ss2022;
 
 
+import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +27,18 @@ public class DBAccess {
 		
 		System.out.println("\nSuche nach allen Hotels:" );
 		System.out.println("Methodenaufruf: getObjects( DBAccess.HOTEL, \"*\")"   );
-		List<String> result = acc.getObjects(DBAccess.HOTEL, "*");
-		for ( String str : result ){
-			System.out.println( "String: " + str ); 
+		List<Hotel> result = acc.getObjects(DBAccess.HOTEL, "*");
+		for (Hotel hotel: result){
+			System.out.println( "Hotel: " + hotel.toString());
 		}
 		
 		System.out.println("\nSuche nach Hotels mit dem TeilString 'Jahres':" );
 		System.out.println("Methodenaufruf: getObjects( DBAccess.HOTEL, \"Jahres\")"   );
 		result = acc.getObjects(DBAccess.HOTEL, "Jahres");
-		for ( String str : result ){
-			System.out.println( "String: " + str ); 
+		for (Hotel hotel: result){
+			System.out.println( "Hotel: " + hotel.toString());
 		}
-		
+
 		System.out.println("\nDann MUSS ein externer Client mit der Methode closeConnection() die Session explizit schließen!" );
 		acc.closeConnection();
 	}
@@ -60,10 +62,10 @@ public class DBAccess {
 	}
 	
 	
-	public List<String> getObjects( int type, String value  ){
+	public List<Hotel> getObjects(int type, String value){
 		Statement st;
 		ResultSet rs;
-		List<String> result = new ArrayList<>();
+		List<Hotel> result = new ArrayList<>();
 		if (value.equals("*") ) {
 			value = "";
 		}
@@ -71,11 +73,14 @@ public class DBAccess {
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT * FROM buchungsystem.hotel WHERE buchungsystem.hotel.name ilike " + "'%" + value +  "%'" );
 			while (rs.next() ){
-				// System.out.println( "Hotel: " + rs.getString( "name" ) );
-				result.add(rs.getString(1));
-				result.add(rs.getString(2));
-				result.add(rs.getString(3));
-			} 
+				Hotel hotel = new Hotel(
+						rs.getLong("id"),
+						rs.getString("name"),
+						rs.getString("ort"),		// ort is mapped to location
+						rs.getInt("sterne"),		// sterne is mapped to stars
+						rs.getString("kontact"));// kontact gets mapped to contact
+				result.add(hotel);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
