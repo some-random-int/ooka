@@ -9,16 +9,11 @@ import java.util.Properties;
 public class DBAccess {
 	
 	public final static int HOTEL = 0;
-	
 	public final static int AUTO = 1;
-
 	private String url = "jdbc:postgresql://dumbo.inf.h-brs.de/demouser";
-	
 	private Connection conn;
 	
-	public DBAccess() {   
-		
-	} 
+	public DBAccess() { }
 
 	public static void main(String[] args) {
 		DBAccess acc = new DBAccess();
@@ -35,7 +30,7 @@ public class DBAccess {
 			System.out.println( "String: " + str ); 
 		}
 		
-		System.out.println("\nSuche nach Hotels mit dem TeilString \'Jahres\':" );
+		System.out.println("\nSuche nach Hotels mit dem TeilString 'Jahres':" );
 		System.out.println("Methodenaufruf: getObjects( DBAccess.HOTEL, \"Jahres\")"   );
 		result = acc.getObjects(DBAccess.HOTEL, "Jahres");
 		for ( String str : result ){
@@ -44,23 +39,19 @@ public class DBAccess {
 		
 		System.out.println("\nDann MUSS ein externer Client mit der Methode closeConnection() die Session explizit schließen!" );
 		acc.closeConnection();
-		// TODO Auto-generated method stub
-
 	}
 	
 	public void openConnection(){
-		  try {
-			DriverManager.registerDriver( new org.postgresql.Driver() ); 
+		try {
+			DriverManager.registerDriver(new org.postgresql.Driver());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		  Properties props = new Properties();
-		  props.setProperty("user","demouser");
-		  props.setProperty("password","demouser");
-
-		  try {
+	  	Properties props = new Properties();
+	  	props.setProperty("user","demouser");
+	  	props.setProperty("password","demouser");
+	  	try {
 			 this.conn = DriverManager.getConnection(url, props);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -72,18 +63,18 @@ public class DBAccess {
 	public List<String> getObjects( int type, String value  ){
 		Statement st;
 		ResultSet rs;
-		List<String> result = new ArrayList();
+		List<String> result = new ArrayList<>();
 		if (value.equals("*") ) {
 			value = "";
 		}
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT * FROM buchungsystem.hotel WHERE buchungsystem.hotel.name ilike " + "\'%" + value +  "%\'" );
+			rs = st.executeQuery("SELECT * FROM buchungsystem.hotel WHERE buchungsystem.hotel.name ilike " + "'%" + value +  "%'" );
 			while (rs.next() ){
-				    // System.out.println( "Hotel: " + rs.getString( "name" ) ); 
-				    result.add( rs.getString( 1 ) );
-				    result.add( rs.getString( 2 ) );
-				    result.add( rs.getString( 3 ) );
+				// System.out.println( "Hotel: " + rs.getString( "name" ) );
+				result.add(rs.getString(1));
+				result.add(rs.getString(2));
+				result.add(rs.getString(3));
 			} 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -93,14 +84,12 @@ public class DBAccess {
 	}
 	
 	public void closeConnection(){
-		   try {
+		try {
 			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-
 	}
-
 
 }
