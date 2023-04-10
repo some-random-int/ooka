@@ -2,6 +2,7 @@ package org.bonn.ooka.buchungssystem.ss2022;
 
 import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +33,24 @@ public class HotelRetrievalProxy implements HotelSearch {
 
     @Override
     public List<Hotel> getHotelByName(String name) {
+        this.log("getHotelByName", " Keyword: " + name);
         return this.hotelRetrieval.getHotelByName(name);
     }
 
     @Override
     public void openSession() {
+        this.log("openSession", "");
         this.hotelRetrieval.openSession();
     }
 
     @Override
     public void closeSession() {
+        this.log("closeSession", "");
         this.hotelRetrieval.closeSession();
+    }
+
+    private void log(String methodName, String description) {
+        System.out.println(LocalDateTime.now() + ": Booking-system was accessed using method '" + methodName + "'. " +
+                description);
     }
 }
