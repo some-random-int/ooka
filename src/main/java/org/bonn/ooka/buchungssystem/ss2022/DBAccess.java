@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class DBAccess {
+class DBAccess {
 	
-	public final static int HOTEL = 0;
-	public final static int AUTO = 1;
+	protected final static int HOTEL = 0;
+	protected final static int AUTO = 1;
 	private String url = "jdbc:postgresql://dumbo.inf.h-brs.de/demouser";
 	private Connection conn;
 	
-	public DBAccess() { }
+	protected DBAccess() { }
 
-	public static void main(String[] args) {
+	protected static void main(String[] args) {
 		DBAccess acc = new DBAccess();
 		System.out.println("Mini-Tutorial der Klasse DBAccess" );
 		System.out.println("c/o Sascha Alda, 2019 - 2023" );
@@ -43,7 +43,7 @@ public class DBAccess {
 		acc.closeConnection();
 	}
 	
-	public void openConnection(){
+	protected void openConnection(){
 		try {
 			DriverManager.registerDriver(new org.postgresql.Driver());
 		} catch (SQLException e) {
@@ -62,7 +62,7 @@ public class DBAccess {
 	}
 	
 	
-	public List<Hotel> getObjects(int type, String value){
+	protected List<Hotel> getObjects(int type, String value){
 		Statement st;
 		ResultSet rs;
 		List<Hotel> result = new ArrayList<>();
@@ -88,7 +88,7 @@ public class DBAccess {
 		return result;
 	}
 	
-	public void closeConnection(){
+	protected void closeConnection(){
 		try {
 			conn.close();
 		} catch (SQLException e) {
