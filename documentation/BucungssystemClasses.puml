@@ -1,0 +1,80 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package buchungssystem_test.ss2023 {
+    class Client {
+        + main(args: String[]): void
+    }
+}
+
+package buchungssystem.ss2023 {
+    interface HotelSearch {
+        + getHotelByName(String name): List<Hotel>
+        + getHotelByNameAndContact(String name, String contact): List<Hotel>
+        + openSession(): void
+        + closeSession(): void
+        + getCurrentInterfaces(): List<String>
+    }
+    class HotelRetrieval implements HotelSearch {
+        - dbAccess: DBAccess
+        - cache: DBCache
+    }
+    class HotelRetrievalProxy implements HotelSearch {
+        - hotelRetrieval: HotelRetrieval
+    }
+
+    HotelRetrievalProxy -> HotelRetrieval
+
+    class DBAccess {
+        # HOTEL: int = 0
+        # AUTO: int = 1
+        - url: String
+        - conn: Connection
+        # openConnection(): void
+        # closeConnection(): void
+        # getHotelsByName(type: int, name: String): List<Hotel>
+        # getHotelsByNameAndContact(type: int, name: String, contact: String): List<Hotel>
+    }
+
+    HotelRetrieval --> DBAccess
+
+    interface DBCache< T > {
+        cacheResult(String key, List<T> value): void
+        isCached(String key): boolean
+        getValue(String key): List<T>
+    }
+
+    HotelRetrieval --> DBCache
+
+    class Cache< T > implements DBCache {
+        - cache: Map<String, List<T>>
+    }
+
+    package models {
+        class Hotel {
+            - id: long
+            - name: String
+            - location: String
+            - Stars: int
+            - contact: String
+
+            + Hotel(long id, String name, String location, int stars, String contact): Hotel
+            + getId(): long
+            + getName(): String
+            + getLocation(): String
+            + getStars(): int
+            + getContact(): String
+            + toString(): String
+    }
+
+    DBAccess --> Hotel
+    HotelSearch --> Hotel
+
+
+    Client -> HotelRetrievalProxy
+    Client -> HotelSearch
+    Client -> Cache
+    Client -> Hotel
+}
+
+@enduml
