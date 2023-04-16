@@ -1,6 +1,6 @@
-package org.bonn.ooka.buchungssystem.ss2022;
+package org.bonn.ooka.buchungssystem.ss2023;
 
-import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
+import org.bonn.ooka.buchungssystem.ss2023.models.Hotel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ public class HotelRetrievalProxy implements HotelSearch {
     HotelRetrieval hotelRetrieval;
 
     public HotelRetrievalProxy(DBCache<Hotel> cache) {
+        this.log("constructor", "CacheType: " + cache.getClass());
         this.hotelRetrieval = new HotelRetrieval(cache);
     }
     public HotelRetrievalProxy() {
@@ -38,6 +39,12 @@ public class HotelRetrievalProxy implements HotelSearch {
     }
 
     @Override
+    public List<Hotel> getHotelByNameAndContact(String name, String contact) {
+        this.log("getHotelByNameAndContact", " Keywords: " + name + ", " + contact);
+        return this.hotelRetrieval.getHotelByNameAndContact(name, contact);
+    }
+
+    @Override
     public void openSession() {
         this.log("openSession", "");
         this.hotelRetrieval.openSession();
@@ -47,6 +54,12 @@ public class HotelRetrievalProxy implements HotelSearch {
     public void closeSession() {
         this.log("closeSession", "");
         this.hotelRetrieval.closeSession();
+    }
+
+    @Override
+    public List<String> getCurrentInterfaces() {
+        this.log("getCurrentInterfaces", "");
+        return this.hotelRetrieval.getCurrentInterfaces();
     }
 
     private void log(String methodName, String description) {

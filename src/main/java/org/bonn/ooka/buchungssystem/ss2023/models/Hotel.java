@@ -1,4 +1,4 @@
-package org.bonn.ooka.buchungssystem.ss2022.models;
+package org.bonn.ooka.buchungssystem.ss2023.models;
 
 public class Hotel {
     private long id;

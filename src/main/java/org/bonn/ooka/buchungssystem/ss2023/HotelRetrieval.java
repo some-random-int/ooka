@@ -1,7 +1,8 @@
-package org.bonn.ooka.buchungssystem.ss2022;
+package org.bonn.ooka.buchungssystem.ss2023;
 
-import org.bonn.ooka.buchungssystem.ss2022.models.Hotel;
+import org.bonn.ooka.buchungssystem.ss2023.models.Hotel;
 
+import java.util.Collections;
 import java.util.List;
 
 class HotelRetrieval implements HotelSearch {
@@ -24,11 +25,27 @@ class HotelRetrieval implements HotelSearch {
         }
     }
 
+    @Override
+    public List<Hotel> getHotelByNameAndContact(String name, String contact) {
+        if (this.cache.isCached(name+contact)) {
+            return this.cache.getValue(name+contact);
+        } else {
+            List<Hotel> result = this.dbAccess.getHotelsByContact(DBAccess.HOTEL, name, contact);
+            this.cache.cacheResult(name, result);
+            return result;
+        }
+    }
+
     public void openSession() {
         this.dbAccess.openConnection();
     }
 
     public void closeSession() {
         this.dbAccess.closeConnection();
+    }
+
+    @Override
+    public List<String> getCurrentInterfaces() {
+        return Collections.singletonList("getHotelByName(), getHotelByNameAndContact");
     }
 }

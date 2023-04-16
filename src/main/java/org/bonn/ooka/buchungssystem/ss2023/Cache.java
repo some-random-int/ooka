@@ -1,4 +1,4 @@
-package org.bonn.ooka.buchungssystem.ss2022;
+package org.bonn.ooka.buchungssystem.ss2023;
 
 import java.util.HashMap;
 import java.util.List;
