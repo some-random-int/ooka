@@ -12,24 +12,25 @@ public class HotelRetrievalProxy implements HotelSearch {
 
     public HotelRetrievalProxy(DBCache<Hotel> cache) {
         this.log("constructor", "CacheType: " + cache.getClass());
+        // use an always empty cache, to prevent failure in HotelRetrieval
+        if (cache == null) {
+            cache = new DBCache<Hotel>() { // anonymous class
+                @Override
+                public void cacheResult(String key, List<Hotel> value) {
+                }
+
+                @Override
+                public boolean isCached(String key) {
+                    return false;
+                }
+
+                @Override
+                public List<Hotel> getValue(String key) {
+                    return new ArrayList<>();
+                }
+            };
+        }
         this.hotelRetrieval = new HotelRetrieval(cache);
-    }
-    public HotelRetrievalProxy() {
-        // hand an always empty cache, to prevent failure in HotelRetrieval
-        this(new DBCache<Hotel>() { // anonymous class
-            @Override
-            public void cacheResult(String key, List<Hotel> value) { }
-
-            @Override
-            public boolean isCached(String key) {
-                return false;
-            }
-
-            @Override
-            public List<Hotel> getValue(String key) {
-                return new ArrayList<>();
-            }
-        });
     }
 
     @Override
